@@ -1,4 +1,4 @@
-package com.example.demo.models;
+package br.com.techsync.models;
 
 import jakarta.persistence.*;
 

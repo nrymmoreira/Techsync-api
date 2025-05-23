@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package br.com.techsync.controller;
 
-import com.example.demo.models.Usuario;
-import com.example.demo.service.UsuarioService;
+import br.com.techsync.models.Usuario;
+import br.com.techsync.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

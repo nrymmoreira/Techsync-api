@@ -1,7 +1,7 @@
-package com.example.demo.service;
+package br.com.techsync.service;
 
-import com.example.demo.models.Usuario;
-import com.example.demo.repository.UsuarioRepository;
+import br.com.techsync.models.Usuario;
+import br.com.techsync.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
