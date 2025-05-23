@@ -6,16 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/empresa")
 public class EmpresaController {
 
-    @Autowired
-    private EmpresaService empresaService;
+    private final EmpresaService empresaService;
 
-    // Criar um nova empresa
+    public EmpresaController(EmpresaService empresaService) {
+        this.empresaService = empresaService;
+    }
+
+    // Criar uma nova empresa
     @PostMapping
     public ResponseEntity<Empresa> criarEmpresa(@RequestBody Empresa empresa) {
         Empresa novoEmpresa = empresaService.criarEmpresa(empresa);
