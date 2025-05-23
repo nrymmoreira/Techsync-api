@@ -2,8 +2,6 @@ package br.com.techsync.models;
 
 import jakarta.persistence.*;
 
-import java.io.File;
-
 @Entity
 @Table(name = "T_TS_COMPANY")
 public class Empresa {
@@ -33,22 +31,7 @@ public class Empresa {
 
     public Empresa() {}
 
-    public Empresa(String nome, int cnpj, byte[] logo, String currency, String timezone) {
-        this.nome = nome;
-        this.cnpj = cnpj;
-        this.logo = logo;
-        this.currency = currency;
-        this.timezone = timezone;
-    }
-
     // Getters e Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;

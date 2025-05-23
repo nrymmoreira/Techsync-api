@@ -1,5 +1,5 @@
 spring.datasource.url=jdbc:oracle:thin:@{IP}:{PORTA}:XE
-spring.datasource.username={SEU USUARIO}
+spring.datasource.username={SEU USUÁRIO}
 spring.datasource.password={SUA SENHA}
 
 spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
