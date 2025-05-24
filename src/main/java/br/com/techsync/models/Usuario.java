@@ -60,5 +60,11 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    //Método para obter dados do usuário
+    public String getDados() {
+        //Retorna em formatação de String
+        return "Id: " + id + ", Nome: " + nome + ", Email: " + email + ", Senha: " + senha;
+    }
 }
 

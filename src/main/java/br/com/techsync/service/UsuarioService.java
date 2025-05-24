@@ -41,4 +41,20 @@ public class UsuarioService {
         }
         return false;
     }
+
+    public Usuario buscarUsuarioId(int id){
+        return usuarioRepository.findById(id).orElse(null);
+    }
+
+    public boolean resetSenha(String email, String novaSenha){
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
+
+        if (usuarioOptional.isPresent()){
+            Usuario usuario = usuarioOptional.get();
+            usuario.setSenha(novaSenha);
+            usuarioRepository.save(usuario);
+            return true;
+        }
+        return false;
+    }
 }
