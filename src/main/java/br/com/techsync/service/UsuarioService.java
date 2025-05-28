@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class UsuarioService {
@@ -57,4 +58,36 @@ public class UsuarioService {
         }
         return false;
     }
+
+    public boolean gerarCodigo2FA(String email){
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
+
+        if (usuarioOptional.isPresent()){
+            Usuario usuario = usuarioOptional.get();
+
+            String codigo2FA = String.format("%06d", new Random().nextInt(999999));
+            usuario.setCodigo2FA(codigo2FA);
+
+            usuarioRepository.save(usuario);
+
+            System.out.println("Codigo gerado = " + codigo2FA);
+
+            return true;
+        }
+        return false;
+    }
+
+    public boolean autenticar2FA(String email, String senha, String codigo2FA){
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
+
+        if (usuarioOptional.isPresent()){
+            Usuario usuario = usuarioOptional.get();
+
+            if (usuario.getSenha().equals(senha) & codigo2FA.equals(usuario.getCodigo2FA())){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

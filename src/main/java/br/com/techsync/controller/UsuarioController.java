@@ -35,6 +35,33 @@ public class UsuarioController {
         }
     }
 
+    //Gerar codigo de autentificação de dois fatores (2FA)
+    @PostMapping("/gerar2fa")
+    public ResponseEntity<String> gerarCodigo2FA(@RequestParam String email){
+        boolean gerado = usuarioService.gerarCodigo2FA(email);
+
+        if(gerado){
+            return ResponseEntity.ok("Codigo 2FA gerado com sucesso.");
+        } else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
+        }
+    }
+
+    //Realizando a autenticação de dois fatores (2FA)
+    @PostMapping("/autenticar2fa")
+    public ResponseEntity<String> autenticar2FA(
+            @RequestParam String email,
+            @RequestParam String senha,
+            @RequestParam String codigo2FA){
+        boolean autenticado = usuarioService.autenticar2FA(email, senha, codigo2FA);
+
+        if (autenticado){
+            return ResponseEntity.ok("Autenticação 2FA bem-sucedida");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falha na autenticação 2FA.");
+        }
+    }
+
     // Editar um usuário
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> editarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {

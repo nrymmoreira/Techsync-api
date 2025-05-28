@@ -19,6 +19,9 @@ public class Usuario {
     @Column(nullable = false)
     private String senha;
 
+    @Column
+    private String codigo2FA;
+
     // Construtores, Getters e Setters
 
     public Usuario() {}
@@ -60,6 +63,10 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public String getCodigo2FA() {return codigo2FA;}
+
+    public void setCodigo2FA(String codigo2FA) {this.codigo2FA = codigo2FA;}
 
     //Método para obter dados do usuário
     public String getDados() {
