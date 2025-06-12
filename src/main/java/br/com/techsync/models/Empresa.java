@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class Empresa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -71,6 +70,14 @@ public class Empresa {
 
     public void setTimezone(String timezone) {
         this.timezone = timezone;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
 

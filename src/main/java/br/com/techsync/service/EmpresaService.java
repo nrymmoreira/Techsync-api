@@ -3,6 +3,7 @@ package br.com.techsync.service;
 import br.com.techsync.models.Empresa;
 import br.com.techsync.repository.EmpresaRepository;
 import org.springframework.stereotype.Service;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,10 @@ public class EmpresaService {
     public Empresa listarEmpresa(int id) {
         Optional<Empresa> empresa = empresaRepository.findById(id);
         return empresa.orElse(null);
+    }
+
+    public List<Empresa> listarEmpresas() {
+        return empresaRepository.findAll();
     }
 
     public boolean excluirEmpresa(int id) {

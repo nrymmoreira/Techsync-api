@@ -4,6 +4,7 @@ import br.com.techsync.models.Empresa;
 import br.com.techsync.service.EmpresaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 
 @RestController
@@ -34,6 +35,13 @@ public class EmpresaController {
     @GetMapping("/{id}")
     public ResponseEntity<Empresa> listarEmpresa(@PathVariable int id) {
         Empresa empresa = empresaService.listarEmpresa(id);
+        return ResponseEntity.ok(empresa);
+    }
+
+    // Listar empresa
+    @GetMapping
+    public ResponseEntity<List<Empresa>> listarEmpresas() {
+        List<Empresa> empresa = empresaService.listarEmpresas();
         return ResponseEntity.ok(empresa);
     }
 
