@@ -3,6 +3,7 @@ package br.com.techsync.service;
 import br.com.techsync.models.Usuario;
 import br.com.techsync.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,11 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public Usuario criarUsuario(Usuario usuario) {
+        String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaCriptografada);
         return usuarioRepository.save(usuario);
     }
 
@@ -25,7 +30,12 @@ public class UsuarioService {
             Usuario u = usuarioExistente.get();
             u.setNome(usuario.getNome());
             u.setEmail(usuario.getEmail());
-            u.setSenha(usuario.getSenha());
+
+            if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+                String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
+                u.setSenha(senhaCriptografada);
+            }
+
             return usuarioRepository.save(u);
         }
         return null;
@@ -52,7 +62,8 @@ public class UsuarioService {
 
         if (usuarioOptional.isPresent()){
             Usuario usuario = usuarioOptional.get();
-            usuario.setSenha(novaSenha);
+            String senhaCriptografada = passwordEncoder.encode(novaSenha);
+            usuario.setSenha(senhaCriptografada);
             usuarioRepository.save(usuario);
             return true;
         }
@@ -83,11 +94,11 @@ public class UsuarioService {
         if (usuarioOptional.isPresent()){
             Usuario usuario = usuarioOptional.get();
 
-            if (usuario.getSenha().equals(senha) & codigo2FA.equals(usuario.getCodigo2FA())){
-                return true;
+            boolean senhaValida = passwordEncoder.matches(senha, usuario.getSenha());
+            boolean codigoValido = codigo2FA.equals(usuario.getCodigo2FA());
+
+            return senhaValida && codigoValido;
             }
-        }
         return false;
     }
-
 }

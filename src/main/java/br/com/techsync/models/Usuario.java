@@ -1,6 +1,7 @@
 package br.com.techsync.models;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "T_TS_USUARIOS")
@@ -16,6 +17,7 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String senha;
 
@@ -71,7 +73,7 @@ public class Usuario {
     //Método para obter dados do usuário
     public String getDados() {
         //Retorna em formatação de String
-        return "Id: " + id + ", Nome: " + nome + ", Email: " + email + ", Senha: " + senha;
+        return "Id: " + id + ", Nome: " + nome + ", Email: " + email;
     }
 }
 

@@ -89,8 +89,10 @@ public class UsuarioController {
 
     // Excluir um usuário
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirUsuario(@PathVariable int id) {
-        return usuarioService.excluirUsuario(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    public ResponseEntity<String> excluirUsuario(@PathVariable int id) {
+        return usuarioService.excluirUsuario(id)
+                ? ResponseEntity.ok("Usuario excluido com sucesso!")
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
     }
 }
 
