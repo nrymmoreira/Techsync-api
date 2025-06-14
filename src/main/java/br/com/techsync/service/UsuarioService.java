@@ -2,6 +2,7 @@ package br.com.techsync.service;
 
 import br.com.techsync.models.Usuario;
 import br.com.techsync.repository.UsuarioRepository;
+import br.com.techsync.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public Usuario criarUsuario(Usuario usuario) {
         String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
@@ -55,6 +59,23 @@ public class UsuarioService {
 
     public Usuario buscarUsuarioId(int id){
         return usuarioRepository.findById(id).orElse(null);
+    }
+
+
+    public String loginComJwt(String email, String senha) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
+
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+
+            boolean senhaCorreta = passwordEncoder.matches(senha, usuario.getSenha());
+
+            if (senhaCorreta) {
+                return jwtUtil.gerarToken(email);
+            }
+        }
+
+        return null;
     }
 
     public boolean resetSenha(String email, String novaSenha){

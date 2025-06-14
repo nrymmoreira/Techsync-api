@@ -23,6 +23,51 @@ public class UsuarioController {
         return ResponseEntity.ok(novoUsuario);
     }
 
+    // Editar um usuário
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> editarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {
+        Usuario usuarioEditado = usuarioService.editarUsuario(id, usuario);
+        return usuarioEditado != null ? ResponseEntity.ok(usuarioEditado) : ResponseEntity.notFound().build();
+    }
+
+    // Listar todos os usuários
+    @GetMapping
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        List<Usuario> usuarios = usuarioService.listarUsuarios();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    // Listar um único usuário por ID\
+    @GetMapping ("/{id}")
+    public ResponseEntity<Usuario> buscarUsuarioID(@PathVariable int id){
+        Usuario usuario = usuarioService.buscarUsuarioId(id);
+        if (usuario != null){
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Excluir um usuário
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> excluirUsuario(@PathVariable int id) {
+        return usuarioService.excluirUsuario(id)
+                ? ResponseEntity.ok("Usuario excluido com sucesso!")
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
+    }
+
+    // Fazer login
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String senha) {
+        String token = usuarioService.loginComJwt(email, senha);
+
+        if (token != null) {
+            return ResponseEntity.ok().body("{\"token\": \"" + token + "\"}");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou senha inválidos.");
+        }
+    }
+
     // Resetar Senha do usuário
     @PostMapping("/resetSenha")
     public ResponseEntity<String> resetSenha(@RequestParam String email, @RequestParam String novaSenha){
@@ -62,37 +107,5 @@ public class UsuarioController {
         }
     }
 
-    // Editar um usuário
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> editarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {
-        Usuario usuarioEditado = usuarioService.editarUsuario(id, usuario);
-        return usuarioEditado != null ? ResponseEntity.ok(usuarioEditado) : ResponseEntity.notFound().build();
-    }
-
-    // Listar todos os usuários
-    @GetMapping
-    public ResponseEntity<List<Usuario>> listarUsuarios() {
-        List<Usuario> usuarios = usuarioService.listarUsuarios();
-        return ResponseEntity.ok(usuarios);
-    }
-
-    // Listar um único usuário por ID\
-    @GetMapping ("/{id}")
-    public ResponseEntity<Usuario> buscarUsuarioID(@PathVariable int id){
-        Usuario usuario = usuarioService.buscarUsuarioId(id);
-        if (usuario != null){
-            return ResponseEntity.ok(usuario);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    // Excluir um usuário
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> excluirUsuario(@PathVariable int id) {
-        return usuarioService.excluirUsuario(id)
-                ? ResponseEntity.ok("Usuario excluido com sucesso!")
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
-    }
 }
 
