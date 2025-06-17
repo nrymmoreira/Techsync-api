@@ -55,12 +55,21 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // Define quais endpoints precisam de autenticação JWT
     private boolean isProtectedEndpoint(HttpServletRequest request) {
         String path = request.getRequestURI();
+        String method = request.getMethod();
 
-        // Protege as rotas acessadas que fica /api/usuarios exceto login
-        return path.startsWith("/api/usuarios") && !path.endsWith("/login");
+        if (path.equals("/api/usuarios/login")) {
+            return false;
+        }
+
+
+        if (path.equals("/api/usuarios") && method.equals("POST")) {
+            return false;
+        }
+
+        return path.startsWith("/api/usuarios");
     }
+
 }
 
