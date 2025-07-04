@@ -14,12 +14,23 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    // Usar a mesma chave secreta que no arquivo JwtUtil
     private final String chaveSecreta = "MinhaChaveSuperSecreta1234567890123456";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        // Configurar cabeçalhos CORS para todas as respostas
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
+        // Permitir requisições OPTIONS (pré-voo CORS) sem validação
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
 
         String authorizationHeader = request.getHeader("Authorization");
 
@@ -59,10 +70,10 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         String method = request.getMethod();
 
-        if (path.equals("/api/usuarios/login")) {
+        // Endpoints desprotegidos
+        if (path.equals("/api/usuarios/login") && method.equals("POST")) {
             return false;
         }
-
 
         if (path.equals("/api/usuarios") && method.equals("POST")) {
             return false;
@@ -70,6 +81,4 @@ public class JwtFilter extends OncePerRequestFilter {
 
         return path.startsWith("/api/usuarios");
     }
-
 }
-
